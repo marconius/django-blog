@@ -1,0 +1,14 @@
+This is a blog for Django projects
+
+Requirements:
+    django-tiny_mce
+    a version of filebrowser
+
+Principal Ideas behind this blog:
+  * Takes basic-aps' blog a little closer to Wordpress, without overbloat
+  * Easy installation ( installs with TinyMce and filebrowser already configured
+  * Very little or no logic in templates
+  
+Idea Brainstorm:
+  * livesettings
+  
