@@ -3,9 +3,9 @@ from django.contrib import admin
 from tinymce.widgets import TinyMCE
 from django.conf import settings
 
-class TinyMCEForm(forms.ModelForm):
+class TinyMCEPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(TinyMCEForm, self).__init__(*args, **kwargs)
+        super(TinyMCEPostForm, self).__init__(*args, **kwargs)
         self.fields['body'].widget = TinyMCE(
             attrs={
                 'cols': 100, 
@@ -35,5 +35,5 @@ class TinyMCEForm(forms.ModelForm):
                                             + "undo, redo, help", 
                 'content_css' : settings.STATIC_URL 
                                 + "blog/css/custom_content.css",
-                'file_browser_callback' : 'fileBrowser'
+                'file_browser_callback' : 'FileBrowser'
                 })
