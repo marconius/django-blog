@@ -8,6 +8,12 @@ Requirements:
 
 * django-tiny_mce: http://django-tinymce.googlecode.com/svn/tags/release-1.5/docs/.build/html/installation.html
 * filebrowser-no-grappelli or filebrowser: http://readthedocs.org/docs/django-filebrowser/en/latest/quickstart.html
+* django comments (django.contrib.comments in INSTALLED_APPS)
+* django markup (django.contrib.marup in INSTALLED_APPS)
+
+Requirements TODO:
+
+* Remove commenting and markup from project. These should be added only as they are needed
 
 Principal Ideas/Goals Behind Project:
 
