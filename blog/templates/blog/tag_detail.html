@@ -6,13 +6,8 @@
 {% block body_class %}{{ block.super }} tag_detail{% endblock %}
 {% block body_id %}tag_{{ tag.id }}{% endblock %}
 
-
-{% block content_title %}
-  <h2>{% trans "Posts for" %} {{ tag.name }}</h2>
-{% endblock %}
-
-
 {% block content %}
+  <h2>{% trans "Posts for" %} {{ tag.name }}</h2>
   <div class="post_list">
     {% for post in object_list %}
     <div>

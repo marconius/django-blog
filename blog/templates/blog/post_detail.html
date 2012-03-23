@@ -1,28 +1,28 @@
 {% extends "blog/base_blog.html" %}
-
 {% load i18n %}
+{% load blog comments tagging_tags markup %}
 
 {% block title %}{{ object.title }}{% endblock %}
 {% block body_class %}{{ block.super }} post_detail{% endblock %}
 {% block body_id %}post_{{ object.id }}{% endblock %}
 
-
-{% block content_title %}
-  <h2>{{ object.title }}</h2>
-  <p class="other_posts">
-    {% if object.get_previous_by_publish %}
-    <a class="previous" href="{{ object.get_previous_post.get_absolute_url }}" title="{% trans "View previous post" %}">&laquo; {{ object.get_previous_post }}</a>
-    {% endif %}
-    {% if object.get_next_by_publish %}
-    | <a class="next" href="{{ object.get_next_post.get_absolute_url }}" title="{% trans "View next post" %}">{{ object.get_next_post }} &raquo;</a>
-    {% endif %}
-  </p>
+{% block breadcrumbs %}
+    <li><a href="{% url blog_index %}">{% trans "Blog" %}</a></li>
+    <li>{{ object.title }}</li>
 {% endblock %}
 
-
 {% block content %}
-  {% load blog comments tagging_tags markup %}
-
+  <h2>{{ object.title }}</h2>
+  
+  <p class="other_posts">
+  {% if object.get_previous_by_publish %}
+  <a class="previous" href="{{ object.get_previous_post.get_absolute_url }}" title="{% trans "View previous post" %}">&laquo; {{ object.get_previous_post }}</a>
+  {% endif %}
+  {% if object.get_next_by_publish %}
+  | <a class="next" href="{{ object.get_next_post.get_absolute_url }}" title="{% trans "View next post" %}">{{ object.get_next_post }} &raquo;</a>
+  {% endif %}
+  </p>
+  
   <p class="date">{{ object.publish|date:"j F Y" }}</p>
 
   <div class="body">
@@ -31,9 +31,12 @@
 
   {% tags_for_object object as tag_list %}
   {% if tag_list %}
-  <p class="inline_tag_list"><strong>{% trans "Related tags" %}:</strong>
-    {{ tag_list|join:", " }}
-  </p>
+  <strong>{% trans "Related tags" %}:</strong>
+  <ul class="inline_tag_list">
+    {% for tag in tag_list %}
+    <li>{{ tag }}</li>
+    {% endfor %}
+  </ul>
   {% endif %}
 
   {% get_comment_list for object as comment_list %}

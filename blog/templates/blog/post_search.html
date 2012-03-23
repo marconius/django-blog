@@ -5,13 +5,8 @@
 {% block title %}{% trans "Post search" %}{% endblock %}
 {% block body_class %}{{ block.super }} post_search{% endblock %}
 
-
-{% block content_title %}
-  <h2>{% trans "Search" %}</h2>
-{% endblock %}
-
-
 {% block content %}
+  <h2>{% trans "Search" %}</h2>
   <form action="." method="get" id="post_search_form">
     <p>
       <input type="text" name="q" value="{{ search_term }}" id="search">

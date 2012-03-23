@@ -23,7 +23,20 @@ class Category(models.Model):
         verbose_name_plural = _('categories')
         db_table = 'blog_categories'
         ordering = ('title',)
-
+    
+    def _get_parents(self):
+        """
+        get all parents and parents of parents until root
+        """
+        parents = []
+        parent = self.parent
+        while(parent):
+            parents.append(parent)
+            parent = parent.parent
+        parents.reverse()
+        return parents
+    parents = property(_get_parents)
+        
     def __unicode__(self):
         return u'%s' % self.title
 

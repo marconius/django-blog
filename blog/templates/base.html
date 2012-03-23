@@ -8,14 +8,17 @@
 </head>
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
   <div id="body">
-    {% block body %}
-      <div class="content_title">
-        {% block content_title %}{% endblock %}
-      </div>
-      <div class="content">
+    
+    <ul id="breadcrumbs">
+        {% block breadcrumbs %}
+        <li></li>
+        {% endblock %}
+    </ul>
+    
+    <div class="content">
         {% block content %}{% endblock %}
-      </div>
-    {% endblock %}
+    </div>
+    
   </div>
 </body>
 </html>

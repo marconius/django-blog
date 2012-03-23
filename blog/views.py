@@ -112,8 +112,11 @@ def category_detail(request, slug, template_name = 'blog/category_detail.html', 
             List of posts specific to the given category.
         category
             Given category.
+        parent_categories
+            list of parents and parents of parents until root category
     """
     category = get_object_or_404(Category, slug__iexact=slug)
+    parent_cats = category.parents
 
     return list_detail.object_list(
         request,
