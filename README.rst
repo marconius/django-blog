@@ -1,5 +1,5 @@
 ===========
-django-wall
+django-blog
 ===========
 
 This is a blog for Django projects.
@@ -17,14 +17,14 @@ Requirements TODO:
 
 Principal Ideas/Goals Behind Project:
 
-* Takes basic-apps' blog a little closer to Wordpress, without overbloat
-* Easy installation ( installs with TinyMce and filebrowser already configured
+I like how easy and simple the simple-apps blog is, but because it has been abandonned long ago, I just tweak this thing for use in my projects.
+
+* Very quick installation with TinyMCE and filebrowser already set to go
 * Very little or no logic in templates
-* Makes easy to use and intuitive sites that can be used as substitutes for walls and spaces on the popular social networking sites  
 
 Installation:
 
-* install django-wall (https://github.com/marconius/django-wall)
+* install django-blog (https://github.com/marconius/django-blog)
 * put `blog` in INSTALLED_APPS
 * ./manage.py syncdb or ./manage.py migrate
 * ./manage.py collectstatic
