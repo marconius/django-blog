@@ -1,4 +1,5 @@
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
+from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.models import Site
 from django.contrib.contenttypes.models import ContentType
@@ -9,8 +10,8 @@ from blog.models import Post, Category
 
 class BlogPostsFeed(Feed):
     _site = Site.objects.get_current()
-    title = '%s feed' % _site.name
-    description = '%s posts feed.' % _site.name
+    title = _('{0} Feed').format(_site.name)
+    description = _('{0} Posts Feed.').format(_site.name)
 
     def link(self):
         return reverse('blog_index')
@@ -18,6 +19,12 @@ class BlogPostsFeed(Feed):
     def items(self):
         return Post.objects.published()[:10]
 
+    def item_title(self, item):
+        return item.title
+    
+    def item_description(self, item):
+        return item.body
+    
     def item_pubdate(self, obj):
         return obj.publish
 
