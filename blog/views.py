@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404
 from django.views.generic import date_based, list_detail #deprecated
-from django.views.generic import DateDetailView
+from django.views.generic import ListView, DateDetailView
 from django.db.models import Q
 from django.conf import settings
 
@@ -14,18 +14,11 @@ from blog.constants import STOP_WORDS_RE
 from blog.settings import *
 from tagging.models import Tag, TaggedItem
 
-
-def post_list(request, page=0, paginate_by=20, **kwargs):
-    page_size = getattr(settings,'BLOG_PAGESIZE', paginate_by)
-    return list_detail.object_list(
-        request,
-        queryset=Post.objects.published(),
-        paginate_by=page_size,
-        page=page,
-        **kwargs
-    )
-post_list.__doc__ = list_detail.object_list.__doc__
-
+class PostListView(ListView):
+    queryset = Post.objects.published()
+    paginate_by = getattr(settings,'BLOG_PAGESIZE', 1)
+    # TODO: include the context that was there before
+    # `has_next`, `next`, `has_previous`, `previous`
 
 def post_archive_year(request, year, **kwargs):
     return date_based.archive_year(
