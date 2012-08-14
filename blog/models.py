@@ -93,12 +93,21 @@ class Post(models.Model):
             'day': self.publish.day,
             'slug': self.slug
         })
-
+    
+    def _get_adjacent_post(self, next):
+        kwargs = {"status__gte":2}
+        method = self.get_previous_by_publish
+        if next:
+            method = self.get_next_by_publish
+        if settings.USE_I18N:
+            kwargs.update({"language":self.language,})
+        return method(**kwargs)
+        
     def get_previous_post(self):
-        return self.get_previous_by_publish(status__gte=2)
+        return self._get_adjacent_post(next=False)
 
     def get_next_post(self):
-        return self.get_next_by_publish(status__gte=2)
+        return self._get_adjacent_post(next=True)
 
 
 class BlogRoll(models.Model):

@@ -8,6 +8,7 @@ from django.views.generic import date_based, list_detail #deprecated
 from django.views.generic import ListView, DateDetailView
 from django.db.models import Q
 from django.conf import settings
+from django.utils.translation import get_language
 
 from blog.models import *
 from blog.constants import STOP_WORDS_RE
@@ -19,7 +20,16 @@ class PostListView(ListView):
     paginate_by = getattr(settings,'BLOG_PAGESIZE', 20)
     # TODO: include the context that was there before
     # `has_next`, `next`, `has_previous`, `previous`
-
+    
+    def get_queryset(self):
+        """
+        Get list of objects with i18n mechanics
+        """
+        qs = super(PostListView, self).get_queryset()
+        if settings.USE_I18N:
+            qs = qs.filter(language=get_language())
+        return qs
+        
 def post_archive_year(request, year, **kwargs):
     return date_based.archive_year(
         request,
