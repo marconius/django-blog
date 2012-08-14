@@ -4,12 +4,14 @@ import re
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404
-from django.views.generic import date_based, list_detail
+from django.views.generic import date_based, list_detail #deprecated
+from django.views.generic import DateDetailView
 from django.db.models import Q
 from django.conf import settings
 
 from blog.models import *
 from blog.constants import STOP_WORDS_RE
+from blog.settings import *
 from tagging.models import Tag, TaggedItem
 
 
@@ -61,29 +63,26 @@ def post_archive_day(request, year, month, day, **kwargs):
     )
 post_archive_day.__doc__ = date_based.archive_day.__doc__
 
-
-def post_detail(request, slug, year, month, day, **kwargs):
+class PostDateDetailView(DateDetailView):
     """
     Displays post detail. If user is superuser, view will display 
     unpublished post detail for previewing purposes.
+    
+    extra context: comments_enabled
     """
-    posts = None
-    if request.user.is_superuser:
-        posts = Post.objects.all()
-    else:
-        posts = Post.objects.published()
-    return date_based.object_detail(
-        request,
-        year=year,
-        month=month,
-        day=day,
-        date_field='publish',
-        slug=slug,
-        queryset=posts,
-        **kwargs
-    )
-post_detail.__doc__ = date_based.object_detail.__doc__
-
+    date_field = 'publish'
+    
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            queryset = Post.objects.all()
+        else:
+            queryset = Post.objects.published()
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super(PostDateDetailView, self).get_context_data(**kwargs)
+        context.update({"comments_enabled": COMMENTS_ENABLED})
+        return context
 
 def category_list(request, template_name = 'blog/category_list.html', **kwargs):
     """
