@@ -16,7 +16,7 @@ from tagging.models import Tag, TaggedItem
 
 class PostListView(ListView):
     queryset = Post.objects.published()
-    paginate_by = getattr(settings,'BLOG_PAGESIZE', 1)
+    paginate_by = getattr(settings,'BLOG_PAGESIZE', 20)
     # TODO: include the context that was there before
     # `has_next`, `next`, `has_previous`, `previous`
 
