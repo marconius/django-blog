@@ -55,15 +55,25 @@ class Post(models.Model):
     slug = models.SlugField(_('slug'), unique_for_date='publish')
     author = models.ForeignKey(User, blank=True, null=True)
     body = models.TextField(_('body'), )
-    tease = models.TextField(_('tease'), blank=True, help_text=_('Concise text suggested. Does not appear in RSS feed.'))
-    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=2)
+    tease = models.TextField(
+        _('tease'),
+        blank=True, 
+        help_text=_('Concise text suggested. Does not appear in RSS feed.'))
+    status = models.IntegerField(_('status'), 
+                                 choices=STATUS_CHOICES, default=2)
     allow_comments = models.BooleanField(_('allow comments'), default=True)
     publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     modified = models.DateTimeField(_('modified'), auto_now=True)
     categories = models.ManyToManyField(Category, blank=True)
     tags = TagField()
+    # i18n
+    language = models.CharField(_('language'), choices=settings.LANGUAGES,
+                                default=settings.LANGUAGE_CODE, max_length=10)
+    translations = models.ManyToManyField('self', blank=True, null=True)
+    #TODO limit to one translation per language?
     objects = PublicManager()
+    #TODO i18n_objects = BlogI18nManager()
 
     class Meta:
         verbose_name = _('post')
