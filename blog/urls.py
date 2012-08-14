@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from blog.views import PostDateDetailView
+from blog.views import PostDateDetailView, PostListView
 
 urlpatterns = patterns('blog.views',
     url(r'^(?P<year>\d{4})/(?P<month>\w{3})/(?P<day>\d{1,2})/'+
@@ -37,12 +37,8 @@ urlpatterns = patterns('blog.views',
         view='search',
         name='blog_search'
     ),
-    url(r'^page/(?P<page>\d+)/$',
-        view='post_list',
-        name='blog_index_paginated'
-    ),
-    url(r'^$',
-        view='post_list',
-        name='blog_index'
+    url(r'^page/(?P<page>\d+)/$', PostListView.as_view(), 
+        name='blog_index_paginated'),
+    url(r'^$', PostListView.as_view(), name='blog_index'
     ),
 )
