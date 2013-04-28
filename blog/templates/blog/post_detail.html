@@ -7,7 +7,7 @@
 {% block body_id %}post_{{ object.id }}{% endblock %}
 
 {% block breadcrumbs %}
-    <li><a href="{% url blog_index %}">{% trans "Blog" %}</a></li>
+    <li><a href="{% url 'blog_index' %}">{% trans "Blog" %}</a></li>
     <li>{{ object.title }}</li>
 {% endblock %}
 

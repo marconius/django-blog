@@ -19,12 +19,12 @@
   
   {% if is_paginated %}
   <p class="pagination">
-    {% if has_next %}
-    <a class="older" href="?page={{ next }}" title="{% trans "View older posts" %}">{% trans "Older" %}</a>
+    {% if page_obj.has_next %}
+    <a class="older" href="?page={{ page_obj.next_page_number }}" title="{% trans "View older posts" %}">{% trans "Older" %}</a>
     {% endif %}
-    {% if has_next and has_previous %} | {% endif %}
-    {% if has_previous %}
-    <a class="newer" href="?page={{ previous }}" title="{% trans "View newer posts" %}">{% trans "Newer" %}</a>
+    {% if page_obj.has_next and page_obj.has_previous %} | {% endif %}
+    {% if page_obj.has_previous %}
+    <a class="newer" href="?page={{ page_obj.previous_page_number }}" title="{% trans "View newer posts" %}">{% trans "Newer" %}</a>
     {% endif %}
   </p>
   {% endif %}
