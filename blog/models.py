@@ -43,8 +43,11 @@ class Category(models.Model):
         return ('blog_category_detail', None, {'slug': self.slug})
 
 
-class Post(models.Model):
-    """Post model."""
+class PostBase(models.Model):
+    """The base class posts.
+    
+    This class is subclassed in order to customize the blog's post
+    """
     STATUS_CHOICES = (
         (1, _('Draft')),
         (2, _('Public')),
@@ -53,8 +56,10 @@ class Post(models.Model):
     slug = models.SlugField(_('slug'), unique_for_date='publish')
     author = models.ForeignKey(User, blank=True, null=True)
     body = models.TextField(_('body'), )
-    tease = models.TextField(_('tease'), blank=True, help_text=_('Concise text suggested. Does not appear in RSS feed.'))
-    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=2)
+    tease = models.TextField(_('tease'), blank=True, 
+                             help_text=_('Concise text suggested'))
+    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, 
+                                 default=1)
     allow_comments = models.BooleanField(_('allow comments'), default=True)
     publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
     created = models.DateTimeField(_('created'), auto_now_add=True)
@@ -69,6 +74,7 @@ class Post(models.Model):
         db_table  = 'blog_posts'
         ordering  = ('-publish',)
         get_latest_by = 'publish'
+        abstract = True
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -88,6 +94,8 @@ class Post(models.Model):
     def get_next_post(self):
         return self.get_next_by_publish(status__gte=2)
 
+class Post(PostBase):
+    pass
 
 class BlogRoll(models.Model):
     """Other blogs you follow."""
