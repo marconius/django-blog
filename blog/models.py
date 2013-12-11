@@ -43,8 +43,8 @@ class Category(models.Model):
         return ('blog_category_detail', None, {'slug': self.slug})
 
 
-class PostBase(models.Model):
-    """The base class posts.
+class BasePost(models.Model):
+    """The base post class
     
     This class is subclassed in order to customize the blog's post
     """
@@ -71,7 +71,6 @@ class PostBase(models.Model):
     class Meta:
         verbose_name = _('post')
         verbose_name_plural = _('posts')
-        db_table  = 'blog_posts'
         ordering  = ('-publish',)
         get_latest_by = 'publish'
         abstract = True
@@ -94,8 +93,6 @@ class PostBase(models.Model):
     def get_next_post(self):
         return self.get_next_by_publish(status__gte=2)
 
-class Post(PostBase):
-    pass
 
 class BlogRoll(models.Model):
     """Other blogs you follow."""
