@@ -1,22 +1,18 @@
-import datetime
-import re
-
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from django.http import Http404
-#from django.views.generic import date_based, list_detail #deprecated
+from django.shortcuts import get_object_or_404
+from django.views.generic import list_detail #deprecated
 from django.views.generic import ( 
     ListView, DetailView, DateDetailView, YearArchiveView, MonthArchiveView, 
     DayArchiveView )
-from django.db.models import Q
 from django.conf import settings
 
-from blog.models import *
-from blog.constants import STOP_WORDS_RE
-from blog.settings import *
+from blog.models import Post, Category
+# todo: from blog.constants import STOP_WORDS_RE
+from blog import settings as blog_settings
 from tagging.models import Tag, TaggedItem
 
+
 class PostListView(ListView):
+    """ The list of all publihed posts ordered by most recent """
     queryset = Post.objects.published()
     paginate_by = getattr(settings,'BLOG_PAGESIZE', 1)
     # TODO: include the context that was there before
@@ -55,7 +51,7 @@ class PostDateDetailView(DateDetailView):
     
     def get_context_data(self, **kwargs):
         context = super(PostDateDetailView, self).get_context_data(**kwargs)
-        context.update({"comments_enabled": COMMENTS_ENABLED})
+        context.update({"comments_enabled": blog_settings.COMMENTS_ENABLED})
         return context
 
 class CategoryListView(ListView):
@@ -116,4 +112,3 @@ def tag_detail(request, slug, template_name = 'blog/tag_detail.html', **kwargs):
         template_name=template_name,
         **kwargs
     )
-

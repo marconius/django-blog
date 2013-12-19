@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import (get_language, get_language_info, 
+                                      ugettext_lazy as _)
 from django.db.models import permalink
 from django.contrib.auth.models import User
 
@@ -44,9 +45,9 @@ class Category(models.Model):
 
 
 class BasePost(models.Model):
-    """The base post class
+    """The base post class (abstract)
     
-    This class is subclassed in order to customize the blog's post
+    To be subclassed in order to customize for your app!
     """
     STATUS_CHOICES = (
         (1, _('Draft')),
@@ -92,7 +93,58 @@ class BasePost(models.Model):
 
     def get_next_post(self):
         return self.get_next_by_publish(status__gte=2)
+    
 
+class Post(BasePost):
+    pass
+
+class MultiLingualPostMixin(models.Model):
+    """ Adds language field and translation functions to blog post 
+    
+    must define 'lang_choices' for this to work
+    """
+    lang_choices = None
+    
+    language = models.CharField(_("Language"), choices=lang_choices,
+                                max_length=10)
+    
+    class Meta:
+        abstract = True
+    
+    @property
+    def available_for_lang(self, lang=""):
+        if lang == "":
+            lang = get_language()
+        return lang in self._languages()
+    
+    def _languages(self):
+        '''
+        returns a list of language codes that Post object is available in
+        '''
+        lang_codes = [self.language]
+        for trans in self.translations.all():
+            if trans.status == 2:
+                lang_codes.append(trans.language)
+        return lang_codes
+    
+    @property
+    def languages(self):
+        '''
+        returns a list of language info dicts for templates
+        '''
+        lang_codes = self._languages()
+        langs = []
+        for lang in self.lang_choices:
+            if lang[0] in lang_codes:
+                langs.append(get_language_info(lang[0]))
+        return langs
+    
+    @property
+    def language_info(self):
+        return get_language_info(self.language)
+    
+    # TODO: def translated(self):
+    
 
 class BlogRoll(models.Model):
     """Other blogs you follow."""
