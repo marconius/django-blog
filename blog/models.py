@@ -3,6 +3,8 @@ from django.utils.translation import (get_language, get_language_info,
                                       ugettext_lazy as _)
 from django.db.models import permalink
 from django.contrib.auth.models import User
+from django.conf import settings
+
 
 from blog.managers import PublicManager
 
@@ -95,21 +97,26 @@ class BasePost(models.Model):
         return self.get_next_by_publish(status__gte=2)
     
 
-class Post(BasePost):
-    pass
+#class Post(BasePost):
+#    pass
 
 class MultiLingualPostMixin(models.Model):
     """ Adds language field and translation functions to blog post 
     
     must define 'lang_choices' for this to work
     """
-    lang_choices = None
-    
+    lang_choices = settings.LANGUAGES
+
     language = models.CharField(_("Language"), choices=lang_choices,
                                 max_length=10)
     
     class Meta:
         abstract = True
+    
+    def __init__(self, *args, **kwargs):
+        print self.lang_choices
+        super(MultiLingualPostMixin, self).__init__(*args, **kwargs)
+        print self.lang_choices
     
     @property
     def available_for_lang(self, lang=""):
