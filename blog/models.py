@@ -113,11 +113,6 @@ class MultiLingualPostMixin(models.Model):
     class Meta:
         abstract = True
     
-    def __init__(self, *args, **kwargs):
-        print self.lang_choices
-        super(MultiLingualPostMixin, self).__init__(*args, **kwargs)
-        print self.lang_choices
-    
     @property
     def available_for_lang(self, lang=""):
         if lang == "":
