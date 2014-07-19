@@ -5,28 +5,28 @@ from django.contrib.sites.models import Site
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
 from django.core.urlresolvers import reverse
-from blog.models import Post, Category
+from blog.models import Category
 
+# TODO: offer feeds some other way? See generic Feed code for ideas
+#class BlogPostsFeed(Feed):
+#    _site = Site.objects.get_current()
+#    title = _('{0} Feed').format(_site.name)
+#    description = _('{0} Posts Feed.').format(_site.name)
 
-class BlogPostsFeed(Feed):
-    _site = Site.objects.get_current()
-    title = _('{0} Feed').format(_site.name)
-    description = _('{0} Posts Feed.').format(_site.name)
+#    def link(self):
+#        return reverse('blog_index')
 
-    def link(self):
-        return reverse('blog_index')
+#    def items(self):
+#        return Post.objects.published()[:10]
 
-    def items(self):
-        return Post.objects.published()[:10]
+#    def item_title(self, item):
+#        return item.title
 
-    def item_title(self, item):
-        return item.title
-    
-    def item_description(self, item):
-        return item.body
-    
-    def item_pubdate(self, obj):
-        return obj.publish
+#    def item_description(self, item):
+#        return item.body
+
+#    def item_pubdate(self, obj):
+#        return obj.publish
 
 
 class BlogPostsByCategory(Feed):
