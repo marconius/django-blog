@@ -3,7 +3,6 @@ from django.contrib import admin
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
-admin.site.register(Category, CategoryAdmin)
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -16,4 +15,3 @@ class PostAdmin(admin.ModelAdmin):
 class BlogRollAdmin(admin.ModelAdmin):
     list_display = ('name', 'url', 'sort_order',)
     list_editable = ('sort_order',)
-admin.site.register(BlogRoll)
