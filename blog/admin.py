@@ -1,5 +1,4 @@
 from django.contrib import admin
-from blog.models import *
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -12,7 +11,6 @@ class PostAdmin(admin.ModelAdmin):
     list_filter   = ('publish', 'categories', 'status')
     search_fields = ('title', 'body')
     prepopulated_fields = {'slug': ('title',)}
-admin.site.register(Post, PostAdmin)
 
 
 class BlogRollAdmin(admin.ModelAdmin):
