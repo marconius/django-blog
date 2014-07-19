@@ -1,7 +1,5 @@
 from django.conf import settings
 
-settings.TINYMCE_SPELLCHECKER = True
-
 # Allow comments 
 def comments_installed():
     return ('django.contrib.comments' in settings.INSTALLED_APPS or
